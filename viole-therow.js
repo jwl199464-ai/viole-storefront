@@ -19,7 +19,9 @@
     if (H.getAttribute('data-viole') === 'on') return;   // 중복 주입 방지
     H.setAttribute('data-viole', 'on');
 
-    var BASE = 'https://cdn.jsdelivr.net/gh/jwl199464-ai/viole-storefront@main/';
+    // 자기 자신(script src) 기준으로 CSS 위치 자동 도출 → Pages든 jsDelivr @sha든 같은 위치에서 로드(항상 최신)
+    var me = document.currentScript || (function(){ var s=document.querySelectorAll('script[src*="viole-therow.js"]'); return s[s.length-1]; })();
+    var BASE = (me && me.src) ? me.src.replace(/viole-therow\.js.*$/, '') : 'https://jwl199464-ai.github.io/viole-storefront/';
 
     function link(id, url) {
       if (document.getElementById(id)) return;
