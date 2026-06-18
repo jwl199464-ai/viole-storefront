@@ -102,3 +102,40 @@ html[data-viole="on"] #vj-proof{
   background:var(--vj-ink); color:#fff; text-align:center;
   font:12px/2.8 var(--vj-font); letter-spacing:.16em;
 }
+
+/* ============================================================
+   헤더 텍스트 3분할 + 홈(메인) 목업 구성 — JS가 마크업 주입(.vj-*)
+   ============================================================ */
+.vj-hd{position:sticky!important;top:0;z-index:200;display:flex!important;align-items:center;justify-content:space-between;height:66px;padding:0 26px;background:#fff;font-family:var(--vj-font)}
+.vj-hd .vj-nav{display:flex;gap:20px;font-size:13px}
+.vj-hd .vj-nav a{color:var(--vj-ink);text-decoration:none}
+.vj-hd .vj-nav a:hover,.vj-hd .vj-util a:hover{text-decoration:underline;text-underline-offset:4px}
+.vj-hd .vj-logo{position:absolute;left:50%;transform:translateX(-50%);font-size:21px;letter-spacing:.34em;font-weight:400;color:var(--vj-ink);text-decoration:none;padding-left:.34em;white-space:nowrap}
+.vj-hd .vj-util{display:flex;gap:18px;font-size:13px}
+.vj-hd .vj-util a{color:var(--vj-ink);text-decoration:none}
+
+html[data-viole="on"] #top{padding:0!important;margin:0!important;max-width:none!important}
+.vj-hero{position:relative;height:86vh;min-height:600px;background:var(--vj-prodbg);overflow:hidden}
+.vj-hero>img{width:100%;height:100%;object-fit:cover;object-position:center 15%;display:block}
+.vj-cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:#fff;font-size:13px;letter-spacing:.06em;text-decoration:none;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+.vj-sec{padding:84px 22px 0;max-width:1500px;margin:0 auto}
+.vj-sec-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:26px}
+.vj-sec-h h2{font-size:17px;font-weight:400;letter-spacing:.08em;margin:0;color:var(--vj-ink)}
+.vj-sec-h a{font-size:13px;color:var(--vj-ink2);text-decoration:none}
+.vj-car{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 80px)/5);gap:20px;overflow-x:auto;padding-bottom:10px}
+.vj-pcard{text-decoration:none;color:var(--vj-ink);display:block}
+.vj-ph{width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--vj-prodbg);display:block}
+.vj-nm{font-size:13px;margin:12px 0 4px}
+.vj-pr{font-size:13px}
+.vj-was{color:#9a958c;text-decoration:line-through;margin-right:6px}
+.vj-sw{display:flex;gap:5px;margin-top:8px}
+.vj-sw i{width:13px;height:13px;border:1px solid #e0ddd8;display:inline-block}
+.vj-feat-wrap{padding:92px 0 0;max-width:1500px;margin:0 auto}
+.vj-feat{display:grid;grid-template-columns:1fr 1fr;align-items:center}
+.vj-feat>img{width:100%;height:100%;min-height:520px;object-fit:cover;display:block;background:var(--vj-prodbg)}
+.vj-feat-tx{padding:0 9%}
+.vj-k{font-size:12px;letter-spacing:.14em;color:var(--vj-ink2);margin-bottom:16px}
+.vj-feat-tx h3{font-size:25px;font-weight:400;line-height:1.4;margin:0 0 20px;color:var(--vj-ink)}
+.vj-feat-tx p{font-size:15px;line-height:1.9;color:#3a3a3a;margin:0 0 26px;max-width:380px}
+.vj-feat-tx>a{font-size:13px;border-bottom:1px solid var(--vj-ink);padding-bottom:3px;text-decoration:none;color:var(--vj-ink)}
+@media(max-width:1007px){.vj-car{grid-auto-columns:calc((100% - 20px)/2)}.vj-feat{grid-template-columns:1fr}.vj-feat>img{min-height:380px}.vj-feat-tx{padding:44px 22px}.vj-hd .vj-nav{display:none}}
