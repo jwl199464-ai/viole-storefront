@@ -27,9 +27,9 @@
       l.id = id; l.rel = 'stylesheet'; l.href = url;
       document.head.appendChild(l);
     }
-    // 폰트 + The Row 오버레이 CSS
+    // 폰트 + The Row 오버레이 CSS (preview 중엔 캐시버스트로 항상 최신 CSS)
     link('vj-font', 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-    link('vj-css', BASE + 'viole-therow.css');
+    link('vj-css', BASE + 'viole-therow.css?t=' + Date.now());
 
     // preview 확인용 하단 띠 (게이트 해제 시 자동 제거하도록 CSS가 data-viole 의존)
     function proof() {
