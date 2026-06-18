@@ -1,25 +1,23 @@
 /* ============================================================
-   VIOLE JU × The Row — Storefront overlay CSS  (v1.1 · collision-safe)
-   · Cafe24 Script Tags API로 라이브 스토어프론트에 주입.
-   · viole-therow.js 가 DEV 게이트(?viole=1)일 때만 활성 → 일반 고객엔 무영향.
-   · ⚠️ v1.0의 일반 클래스(.drawer/.card/.price …)가 카페24 기본 스킨과 충돌 →
-     커스텀 컴포넌트 CSS는 제거. 토큰은 --vj- 접두사로 격리.
-     The Row 레이아웃(헤더/PDP/PLP)은 다음 단계에서 "네이티브 선택자"를 직접 타깃해 구현.
+   VIOLE JU × The Row — Storefront overlay CSS  (v1.2)
+   · Cafe24 Script Tags API로 라이브 주입. viole-therow.js 의 DEV 게이트(?viole=1)일 때만 활성.
+   · 모든 규칙 html[data-viole="on"] 스코프 → 일반 고객 무영향.
+   · 새 마크업은 vj- 접두사, 기존 요소는 네이티브 선택자(.xans-*, .detailArea …) 정밀 타깃 (클래스 충돌 회피).
    ============================================================ */
 
 :root{
   --vj-bg:#ffffff; --vj-ink:#1c1b1b; --vj-ink2:#6f6f6f; --vj-hair:#e6e4e1;
-  --vj-prodbg:#efedea;
+  --vj-prodbg:#efedea; --vj-header-h:99px;
   --vj-font:"Helvetica Neue","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;
 }
 
-/* ── 전역 브랜드 타이포·색 (preview 활성 시) ── */
+/* ── 전역 브랜드 타이포·색 ── */
 html[data-viole="on"] body{
   font-family:var(--vj-font)!important; color:var(--vj-ink);
   -webkit-font-smoothing:antialiased; letter-spacing:.005em;
 }
 
-/* ── 구매 버튼 → The Row 솔리드 검정 / 아웃라인 (네이티브 선택자, 정밀 타깃) ── */
+/* ── 구매 버튼 → The Row 솔리드 검정 / 아웃라인 ── */
 html[data-viole="on"] .btnSubmit,
 html[data-viole="on"] a.btnSubmit,
 html[data-viole="on"] .xans-product-detail .btnSubmit{
@@ -30,6 +28,42 @@ html[data-viole="on"] .btnNormal.actionCart{
   background:#fff!important; border:1px solid var(--vj-ink)!important;
   color:var(--vj-ink)!important; border-radius:0!important;
 }
+
+/* ============================================================
+   PDP (상품상세) → The Row 2단 레이아웃
+   구조: .detailArea > [ .xans-product-image (이미지) + .infoArea (정보) ]
+   현재 네이티브: 정보가 이미지 "아래"로 떨어짐 → grid 2단으로 옆에 sticky 배치.
+   ============================================================ */
+html[data-viole="on"] .xans-product-detail .detailArea{
+  display:grid !important;
+  grid-template-columns:minmax(0,600px) minmax(320px,420px);
+  gap:60px; justify-content:center; align-items:start;
+}
+/* 이미지 컬럼(왼쪽) — float/margin 해제, 컬럼 폭에 맞춤 */
+html[data-viole="on"] .xans-product-detail .xans-product-image{
+  width:auto !important; float:none !important; margin:0 !important; padding:0 !important;
+}
+html[data-viole="on"] .xans-product-detail .xans-product-image .RW{ width:100% !important; }
+html[data-viole="on"] .xans-product-detail .xans-product-image img{ background:var(--vj-prodbg); }
+
+/* 정보 컬럼(오른쪽) — sticky */
+html[data-viole="on"] .xans-product-detail .infoArea{
+  width:auto !important; float:none !important; margin:0 !important;
+  position:sticky; top:var(--vj-header-h);
+}
+/* 상품명 */
+html[data-viole="on"] .infoArea .headingArea{
+  margin:0 0 20px !important; padding:0 !important; border:0 !important; background:none !important;
+}
+html[data-viole="on"] .infoArea .headingArea h2,
+html[data-viole="on"] .infoArea .headingArea h3,
+html[data-viole="on"] .infoArea .headingArea .name,
+html[data-viole="on"] .infoArea .headingArea strong{
+  font-size:19px !important; font-weight:400 !important; letter-spacing:.01em !important;
+  color:var(--vj-ink) !important; line-height:1.45 !important;
+}
+/* 정보 테이블 잡음 줄이기 — 가는 구분선·여백 */
+html[data-viole="on"] .infoArea .guideArea{ color:var(--vj-ink2) !important; font-size:12px !important; }
 
 /* ── preview 확인용 하단 띠 (게이트 해제 시 제거) ── */
 html[data-viole="on"] #vj-proof{
