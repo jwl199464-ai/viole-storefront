@@ -1,195 +1,39 @@
 /* ============================================================
-   VIOLE JU × The Row — Storefront overlay CSS
-   · Cafe24 Script Tags API로 라이브 스토어프론트에 주입되는 디자인.
-   · viole-therow.js 가 DEV 게이트(?viole=1)일 때만 이 CSS를 로드 → 일반 고객엔 영향 없음(개발 중).
-   · 완성되면 게이트 해제 → 전체 적용.
+   VIOLE JU × The Row — Storefront overlay CSS  (v1.1 · collision-safe)
+   · Cafe24 Script Tags API로 라이브 스토어프론트에 주입.
+   · viole-therow.js 가 DEV 게이트(?viole=1)일 때만 활성 → 일반 고객엔 무영향.
+   · ⚠️ v1.0의 일반 클래스(.drawer/.card/.price …)가 카페24 기본 스킨과 충돌 →
+     커스텀 컴포넌트 CSS는 제거. 토큰은 --vj- 접두사로 격리.
+     The Row 레이아웃(헤더/PDP/PLP)은 다음 단계에서 "네이티브 선택자"를 직접 타깃해 구현.
    ============================================================ */
 
 :root{
-  --bg:#ffffff; --ink:#1c1b1b; --ink-2:#6f6f6f; --hair:#e6e4e1;
-  --product-bg:#efedea; --line:#1c1b1b;
-  --gutter:22px; --header-h:75px;
-  --font:"Helvetica Neue","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;
+  --vj-bg:#ffffff; --vj-ink:#1c1b1b; --vj-ink2:#6f6f6f; --vj-hair:#e6e4e1;
+  --vj-prodbg:#efedea;
+  --vj-font:"Helvetica Neue","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;
 }
 
 /* ── 전역 브랜드 타이포·색 (preview 활성 시) ── */
 html[data-viole="on"] body{
-  font-family:var(--font)!important; color:var(--ink);
+  font-family:var(--vj-font)!important; color:var(--vj-ink);
   -webkit-font-smoothing:antialiased; letter-spacing:.005em;
 }
 
-/* ── 구매 버튼 → The Row 솔리드 검정 / 아웃라인 ── */
+/* ── 구매 버튼 → The Row 솔리드 검정 / 아웃라인 (네이티브 선택자, 정밀 타깃) ── */
 html[data-viole="on"] .btnSubmit,
 html[data-viole="on"] a.btnSubmit,
 html[data-viole="on"] .xans-product-detail .btnSubmit{
-  background:var(--ink)!important; border:1px solid var(--ink)!important;
+  background:var(--vj-ink)!important; border:1px solid var(--vj-ink)!important;
   color:#fff!important; border-radius:0!important; box-shadow:none!important;
 }
-html[data-viole="on"] .btnNormal.actionCart,
-html[data-viole="on"] .xans-product-detail .btnNormal{
-  background:#fff!important; border:1px solid var(--ink)!important;
-  color:var(--ink)!important; border-radius:0!important;
+html[data-viole="on"] .btnNormal.actionCart{
+  background:#fff!important; border:1px solid var(--vj-ink)!important;
+  color:var(--vj-ink)!important; border-radius:0!important;
 }
 
 /* ── preview 확인용 하단 띠 (게이트 해제 시 제거) ── */
 html[data-viole="on"] #vj-proof{
   position:fixed; left:0; right:0; bottom:0; z-index:99999;
-  background:var(--ink); color:#fff; text-align:center;
-  font:12px/2.8 var(--font); letter-spacing:.16em;
-}
-
-/* ============================================================
-   디자인 시스템 (커스텀 마크업용 — .hd/.ft/.hero/.plp/.pdp …)
-   native 페이지엔 이 클래스가 없으므로 무해. JS가 단계적으로 마크업/클래스 부여.
-   ============================================================ */
-
-/* 스코프 리셋 — 내 컴포넌트 내부만 */
-.hd,.ft,.hero,.plp-head,.plp-grid,.pdp,.search-panel,.drawer,.scrim,.about-hero,.about-wrap,.about-split,.auth,.stores{box-sizing:border-box}
-.hd *,.ft *,.hero *,.plp-head *,.plp-grid *,.pdp *,.search-panel *,.drawer *,.about-wrap *,.about-split *,.auth *,.stores *{box-sizing:border-box;margin:0;padding:0}
-.hd a,.ft a,.plp-head a,.plp-grid a,.pdp a,.search-panel a,.drawer a,.about-wrap a,.auth a,.stores a,.hero__cue{color:inherit;text-decoration:none}
-.hd button,.ft button,.pdp button,.plp-head button,.drawer button,.search-panel button,.auth button{font-family:inherit;cursor:pointer}
-.search-input,.ft__news input,.auth input{font-family:inherit}
-.hero img,.pdp__media img,.card .ph,.about-hero img,.about-split img,.cart-item img{display:block}
-
-/* ── Header ── */
-.hd{position:sticky;top:0;z-index:50;height:var(--header-h);background:var(--bg);display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter)}
-.hd__nav,.hd__util{display:flex;gap:21px;font-size:14px}
-.hd__nav a:hover,.hd__util a:hover{text-decoration:underline;text-underline-offset:4px}
-.hd__logo{position:absolute;left:50%;transform:translateX(-50%);font-size:22px;letter-spacing:.36em;font-weight:400;white-space:nowrap;padding-left:.36em}
-.hd__burger{display:none;font-size:14px}
-
-/* ── Footer ── */
-.ft{padding:66px var(--gutter) 30px;border-top:1px solid var(--hair)}
-.ft__cols{display:flex;gap:58px;flex-wrap:wrap}
-.ft__col{display:flex;flex-direction:column;gap:10px;min-width:130px}
-.ft__col h4{font-weight:400;color:var(--ink-2);margin-bottom:5px;font-size:13px}
-.ft__col a:hover{text-decoration:underline;text-underline-offset:3px}
-.ft__news input{border:0;border-bottom:1px solid var(--line);padding:8px 0;font-size:14px;width:240px;background:transparent}
-.ft__news label{font-size:12px;color:var(--ink-2);display:flex;gap:7px;margin-top:11px;align-items:center}
-.ft__news label input{width:auto}
-.ft__copy{text-align:center;margin-top:46px;color:var(--ink-2);font-size:12px;letter-spacing:.04em}
-
-/* ── Home hero ── */
-.hero{position:relative;height:calc(100vh - var(--header-h));min-height:560px;background:var(--product-bg);overflow:hidden}
-.hero img{width:100%;height:100%;object-fit:cover;object-position:center 20%}
-.hero__cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:13px;letter-spacing:.08em;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.32)}
-.hero__cue:hover{text-decoration:underline;text-underline-offset:4px}
-
-/* ── PLP ── */
-.plp-head{display:flex;justify-content:space-between;align-items:baseline;padding:20px var(--gutter) 22px;font-size:13px}
-.plp-head .crumb{color:var(--ink-2);letter-spacing:.02em}
-.plp-head .tools{display:flex;gap:20px;color:var(--ink)}
-.plp-head .tools a:hover{text-decoration:underline;text-underline-offset:3px}
-.plp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:0 var(--gutter) 70px}
-.card{display:block}
-.card .ph{width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--product-bg)}
-.card .meta{display:flex;justify-content:space-between;padding-top:13px;font-size:14px;gap:10px}
-.card .pr{white-space:nowrap}
-.card--feature{grid-column:span 2;grid-row:span 2}
-
-/* ── PDP ── */
-.pdp{display:grid;grid-template-columns:minmax(0,603px) 1fr;gap:46px;padding:0 var(--gutter);align-items:start}
-.pdp__media{display:flex;flex-direction:column;gap:8px}
-.pdp__media img{width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--product-bg)}
-.ai-note{font-size:12px;color:var(--ink-2);padding:7px 0 0}
-.pdp__info{position:sticky;top:calc(var(--header-h) + 24px);max-width:392px;padding-top:24px}
-.crumb{font-size:13px;color:var(--ink-2);margin-bottom:20px;letter-spacing:.02em}
-.pname{font-size:16px;font-weight:400;margin-bottom:8px}
-.price{font-size:16px;margin-bottom:24px}
-.swatches{display:flex;gap:9px;margin-bottom:22px}
-.swatch{width:48px;height:48px;border:1px solid #d8d6d2;cursor:pointer}
-.swatch.sel{outline:1px solid var(--ink);outline-offset:2px}
-.sizes{display:flex;gap:7px;margin-bottom:10px}
-.size{min-width:48px;height:48px;border:1px solid #d8d6d2;background:#fff;font-size:14px;cursor:pointer}
-.size.sel{border-color:var(--ink)}
-.sizeguide{font-size:13px;text-decoration:underline;text-underline-offset:3px;display:inline-block;margin-bottom:22px;color:var(--ink)}
-.cta{display:block;width:100%;height:56px;background:var(--ink);color:#fff;border:0;font-size:15px;letter-spacing:.03em;cursor:pointer;margin-bottom:10px}
-.cta:hover{opacity:.88}
-.save{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;height:50px;background:#fff;color:var(--ink);border:1px solid var(--ink);font-size:14px;cursor:pointer;margin-bottom:28px}
-.desc{font-size:15px;line-height:1.8;color:#2c2b2b;margin-bottom:18px}
-.style-no{font-size:13px;color:var(--ink-2);margin-bottom:28px}
-.acc{border-top:1px solid var(--hair)}
-.acc__item{border-bottom:1px solid var(--hair)}
-.acc__h{width:100%;text-align:left;background:none;border:0;font-size:15px;padding:18px 0;cursor:pointer;display:flex;justify-content:space-between;color:var(--ink)}
-.acc__b{font-size:14px;line-height:1.75;color:#5a5a5a;padding:0 0 18px;display:none}
-.acc__item.open .acc__b{display:block}
-
-/* ── Overlays: search + drawer + scrim ── */
-.scrim{position:fixed;inset:0;background:rgba(0,0,0,.28);opacity:0;visibility:hidden;transition:opacity .35s;z-index:60}
-.scrim.on{opacity:1;visibility:visible}
-.search-panel{position:fixed;top:0;left:0;right:0;background:#fff;z-index:70;transform:translateY(-100%);transition:transform .4s cubic-bezier(.645,.045,.355,1);padding:0 var(--gutter) 42px}
-.search-panel.on{transform:translateY(0)}
-.search-row{display:flex;align-items:center;gap:20px;height:var(--header-h)}
-.search-input{flex:1;border:0;border-bottom:1px solid var(--line);font-size:18px;padding:9px 0;background:transparent}
-.search-input::placeholder{color:var(--ink-2)}
-.search-x{font-size:14px;background:none;border:0;white-space:nowrap;color:var(--ink)}
-.search-sugg{display:flex;flex-direction:column;gap:13px;font-size:14px;margin-top:8px}
-.search-sugg .lbl{color:var(--ink-2);font-size:12px;letter-spacing:.08em;margin-bottom:4px}
-.search-sugg a:hover{text-decoration:underline;text-underline-offset:3px}
-.drawer{position:fixed;top:0;right:0;height:100%;width:400px;max-width:100vw;background:#fff;z-index:70;transform:translateX(100%);transition:transform .5s cubic-bezier(.645,.045,.355,1);display:flex;flex-direction:column}
-.drawer.on{transform:translateX(0)}
-.drawer__top{display:flex;align-items:center;justify-content:space-between;padding:24px 24px 16px}
-.drawer__tabs{display:flex;gap:20px}
-.drawer__tabs button{background:none;border:0;color:var(--ink-2);font-size:14px;padding-bottom:6px}
-.drawer__tabs button.sel{color:var(--ink);border-bottom:1px solid var(--ink)}
-.drawer__x{font-size:14px;background:none;border:0;white-space:nowrap;color:var(--ink)}
-.drawer__body{flex:1;overflow:auto;padding:6px 24px}
-.cart-item{display:flex;gap:14px;padding:18px 0;border-bottom:1px solid var(--hair)}
-.cart-item img{width:92px;height:122px;object-fit:cover;background:var(--product-bg);flex:none}
-.cart-item .ci{flex:1;display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--ink-2)}
-.cart-item .ci .nm{font-size:14px;color:var(--ink)}
-.cart-item .ci .rm{margin-top:auto;text-decoration:underline;cursor:pointer;font-size:12px;width:max-content}
-.drawer__foot{padding:18px 24px 26px;border-top:1px solid var(--hair)}
-.drawer__sum{display:flex;justify-content:space-between;font-size:14px;margin-bottom:14px}
-.btn-solid{display:block;width:100%;height:52px;background:var(--ink);color:#fff;border:0;font-size:15px;cursor:pointer;text-align:center;line-height:52px}
-.btn-out{display:block;width:100%;height:48px;background:#fff;color:var(--ink);border:1px solid var(--ink);font-size:14px;cursor:pointer;text-align:center;line-height:48px;margin-top:10px}
-.hide{display:none !important}
-
-/* ── About ── */
-.about-hero{height:64vh;min-height:420px;background:var(--product-bg);overflow:hidden}
-.about-hero img{width:100%;height:100%;object-fit:cover;object-position:center 22%}
-.about-wrap{max-width:680px;margin:0 auto;padding:84px var(--gutter);text-align:center}
-.about-wrap h2{font-size:23px;font-weight:400;letter-spacing:.05em;margin-bottom:30px}
-.about-wrap p{font-size:16px;line-height:1.95;color:#3a3a3a;margin-bottom:22px}
-.about-split{display:grid;grid-template-columns:1fr 1fr;align-items:center}
-.about-split img{width:100%;height:100%;object-fit:cover;background:var(--product-bg);min-height:440px}
-.about-split .tx{padding:64px}
-.about-split .tx h3{font-size:18px;font-weight:400;margin-bottom:18px;letter-spacing:.03em}
-.about-split .tx p{font-size:15px;line-height:1.9;color:#3a3a3a}
-
-/* ── Account ── */
-.auth{max-width:380px;margin:0 auto;padding:84px var(--gutter) 130px}
-.auth h2{font-size:20px;font-weight:400;text-align:center;letter-spacing:.05em;margin-bottom:42px}
-.auth label{display:block;font-size:12px;color:var(--ink-2);margin-bottom:6px;margin-top:24px;letter-spacing:.04em}
-.auth input{width:100%;border:0;border-bottom:1px solid var(--line);padding:10px 0;font-size:15px;background:transparent}
-.auth .row-between{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:13px;color:var(--ink-2)}
-.auth .row-between a{color:var(--ink);text-decoration:underline}
-.auth .cta{margin-top:36px}
-.auth .alt{text-align:center;margin-top:26px;font-size:13px;color:var(--ink-2)}
-.auth .alt a{color:var(--ink);text-decoration:underline}
-
-/* ── Stores ── */
-.stores{max-width:760px;margin:0 auto;padding:74px var(--gutter)}
-.stores h2{font-size:20px;font-weight:400;text-align:center;margin-bottom:14px;letter-spacing:.05em}
-.stores .lead{text-align:center;color:var(--ink-2);font-size:15px;margin-bottom:50px;line-height:1.9}
-.store-card{border-top:1px solid var(--hair);padding:28px 0;font-size:15px;line-height:1.9}
-.store-card:last-child{border-bottom:1px solid var(--hair)}
-.store-card h3{font-size:16px;font-weight:400;margin-bottom:8px}
-.store-card .muted{color:var(--ink-2)}
-
-/* ── Responsive (The Row 실측: 1008 분기 / 모바일 햄버거) ── */
-@media (max-width:1007px){
-  .hd__nav{display:none}
-  .hd__burger{display:block}
-  .plp-grid{grid-template-columns:repeat(2,1fr)}
-  .card--feature{grid-column:auto;grid-row:auto}
-}
-@media (max-width:767px){
-  .pdp{grid-template-columns:1fr;gap:14px}
-  .pdp__info{position:static;max-width:none;padding-top:20px}
-  .ft__cols{flex-direction:column;gap:26px}
-  .plp-grid{gap:12px}
-  .about-split{grid-template-columns:1fr}
-  .about-split .tx{padding:44px var(--gutter)}
-  .drawer{width:100vw}
+  background:var(--vj-ink); color:#fff; text-align:center;
+  font:12px/2.8 var(--vj-font); letter-spacing:.16em;
 }
