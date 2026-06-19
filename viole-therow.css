@@ -149,3 +149,7 @@ html[data-viole="on"] .xans-product-headcategory .title{font-size:13px!important
 html[data-viole="on"] .xans-product-headcategory img{display:none!important}
 /* JS가 빈 배너 섹션에 부여 */
 html[data-viole="on"] .vj-hidden{display:none!important}
+
+/* PDP 이미지 세로 스택 (왼쪽 스크롤 / 오른쪽 sticky) */
+html[data-viole="on"] .vj-pdp-stack{display:flex;flex-direction:column;gap:6px}
+html[data-viole="on"] .vj-pdp-img{width:100%;height:auto;display:block;background:var(--vj-prodbg)}

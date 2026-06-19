@@ -76,9 +76,27 @@
       }
     }
 
+    // ── PDP(상품상세): 갤러리 → 세로 이미지 스택 (왼쪽 스크롤 / 오른쪽 sticky 정보) ──
+    function buildPDP(){
+      var rw=document.querySelector('.xans-product-image .RW');
+      if(!rw || rw.getAttribute('data-vjpdp')) return;
+      rw.setAttribute('data-vjpdp','1');
+      var urls=[], seen={};
+      Array.prototype.forEach.call(rw.querySelectorAll('img'), function(im){
+        var s=im.getAttribute('src')||'';
+        if(!s || /btn_|txt_|icon|loading|\.gif(\?|$)/i.test(s)) return;
+        var big=s.replace(/\/(tiny|small|medium|micro|smaller|thumb)\//i,'/big/');
+        if(big.indexOf('//')===0) big='https:'+big;
+        var key=big.split('?')[0];
+        if(!seen[key]){ seen[key]=1; urls.push(big); }
+      });
+      if(!urls.length) return;
+      rw.innerHTML='<div class="vj-pdp-stack">'+urls.map(function(u){return '<img class="vj-pdp-img" src="'+u+'" onerror="this.remove()">';}).join('')+'</div>';
+    }
+
     function proof(){ if(document.getElementById('vj-proof'))return; var d=document.createElement('div'); d.id='vj-proof'; d.textContent='VIOLE JU × THE ROW — preview'; document.body.appendChild(d); }
 
-    function run(){ try{ buildHeader(); buildHome(); buildPLP(); proof(); }catch(e){} }
+    function run(){ try{ buildHeader(); buildHome(); buildPLP(); buildPDP(); proof(); }catch(e){} }
     if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded', run);
   } catch(e){ /* 스토어프론트 절대 안 깨뜨림 */ }
 })();
