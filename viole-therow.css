@@ -139,3 +139,12 @@ html[data-viole="on"] #top{padding:0!important;margin:0!important;max-width:none
 .vj-feat-tx p{font-size:15px;line-height:1.9;color:#3a3a3a;margin:0 0 26px;max-width:380px}
 .vj-feat-tx>a{font-size:13px;border-bottom:1px solid var(--vj-ink);padding-bottom:3px;text-decoration:none;color:var(--vj-ink)}
 @media(max-width:1007px){.vj-car{grid-auto-columns:calc((100% - 20px)/2)}.vj-feat{grid-template-columns:1fr}.vj-feat>img{min-height:380px}.vj-feat-tx{padding:44px 22px}.vj-hd .vj-nav{display:none}}
+
+/* PLP 카테고리 헤드라인 → The Row 미니멀 breadcrumb (브라더 skin#11) */
+html[data-viole="on"] .xans-product-headcategory{padding:18px 22px 6px!important;text-align:left!important;margin:0!important;min-height:0!important}
+html[data-viole="on"] .xans-product-headcategory h1,
+html[data-viole="on"] .xans-product-headcategory h2,
+html[data-viole="on"] .xans-product-headcategory .title{font-size:13px!important;font-weight:400!important;color:var(--vj-ink2)!important;letter-spacing:.04em!important;margin:0!important;padding:0!important}
+html[data-viole="on"] .xans-product-headcategory img{display:none!important}
+/* JS가 빈 배너 섹션에 부여 */
+html[data-viole="on"] .vj-hidden{display:none!important}

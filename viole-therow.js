@@ -63,9 +63,22 @@
        +'<section class="vj-feat-wrap"><div class="vj-feat"><img src="'+BASE+'ed.jpg"><div class="vj-feat-tx"><div class="vj-k">EDITORIAL</div><h3>여백이 만드는<br>단정한 하루</h3><p>과하지 않은 디테일과 자연스러운 실루엣. 매일 입어도 질리지 않는, 오래 곁에 두는 옷을 제안합니다.</p><a href="/product/list.html">컬렉션 보기</a></div></div></section>';
     }
 
+    // ── PLP(상품목록): 빈 카테고리 배너 섹션 숨김(여백 정리) ──
+    function buildPLP(){
+      if(location.pathname.indexOf('/product/list')<0 && location.pathname.indexOf('/product/category')<0) return;
+      var pkg=document.querySelector('.normalpackage_box')||document.querySelector('.xans-product-normalpackage');
+      if(!pkg) return;
+      var el=pkg.previousElementSibling, n=0;
+      while(el && n<10){ n++;
+        var hasImg=el.querySelector('img'); var txt=(el.textContent||'').trim();
+        if(!hasImg && txt.length<3 && (''+(el.className||'')).indexOf('headcategory')<0) el.classList.add('vj-hidden');
+        el=el.previousElementSibling;
+      }
+    }
+
     function proof(){ if(document.getElementById('vj-proof'))return; var d=document.createElement('div'); d.id='vj-proof'; d.textContent='VIOLE JU × THE ROW — preview'; document.body.appendChild(d); }
 
-    function run(){ try{ buildHeader(); buildHome(); proof(); }catch(e){} }
+    function run(){ try{ buildHeader(); buildHome(); buildPLP(); proof(); }catch(e){} }
     if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded', run);
   } catch(e){ /* 스토어프론트 절대 안 깨뜨림 */ }
 })();
