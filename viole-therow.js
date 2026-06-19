@@ -35,7 +35,7 @@
       while(hdr.parentElement){ var r=hdr.getBoundingClientRect(); if(r.width>=window.innerWidth*0.9 && r.height<140) break; hdr=hdr.parentElement; }
       if(hdr.getAttribute('data-vjhd')) return;
       hdr.setAttribute('data-vjhd','1');
-      function cat(n){ var a=Array.prototype.filter.call(document.querySelectorAll('a'),function(x){return (x.textContent||'').trim()===n && (x.getAttribute('href')||'').indexOf('list.html')>-1;})[0]; return a?a.getAttribute('href'):'/product/list.html'; }
+      function cat(n){ var a=Array.prototype.filter.call(document.querySelectorAll('a[href*="cate_no="]'),function(x){var t=(x.textContent||'').trim().replace(/^\([^)]*\)\s*/,'');return t.toLowerCase()===n.toLowerCase();})[0]; return a?a.getAttribute('href'):'/product/list.html'; }
       var nav=[['New','/product/list.html'],['Outerwear',cat('Outerwear')],['Tops',cat('Tops')],['Knitwear','/product/list.html'],['Dresses','/product/list.html'],['Trousers','/product/list.html'],['Sale','/product/list.html']].map(function(p){return '<a href="'+p[1]+'">'+p[0]+'</a>';}).join('');
       var util=[['Search','/product/search.html'],['Stores','#'],['Saved','/myshop/wish_list.html'],['Login','/member/login.html'],['Bag (0)','/order/basket.html']].map(function(p){return '<a href="'+p[1]+'">'+p[0]+'</a>';}).join('');
       hdr.classList.add('vj-hd');

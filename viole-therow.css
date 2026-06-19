@@ -117,7 +117,8 @@ html[data-viole="on"] #vj-proof{
 html[data-viole="on"] #top{padding:0!important;margin:0!important;max-width:none!important}
 .vj-hero{position:relative;height:86vh;min-height:600px;background:var(--vj-prodbg);overflow:hidden}
 .vj-hero>img{width:100%;height:100%;object-fit:cover;object-position:center 15%;display:block}
-.vj-cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:#fff;font-size:13px;letter-spacing:.06em;text-decoration:none;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+.vj-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:170px;background:linear-gradient(transparent,rgba(0,0,0,.25));pointer-events:none}
+.vj-cue{position:absolute;z-index:2;bottom:30px;left:50%;transform:translateX(-50%);color:#fff;font-size:13px;letter-spacing:.06em;text-decoration:none;text-shadow:0 1px 12px rgba(0,0,0,.45)}
 .vj-sec{padding:84px 22px 0;max-width:1500px;margin:0 auto}
 .vj-sec-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:26px}
 .vj-sec-h h2{font-size:17px;font-weight:400;letter-spacing:.08em;margin:0;color:var(--vj-ink)}
