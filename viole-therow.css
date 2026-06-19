@@ -184,3 +184,13 @@ html[data-viole="on"] .vj-acc-item{border-bottom:1px solid var(--vj-hair)}
 html[data-viole="on"] .vj-acc-h{width:100%;text-align:left;background:none;border:0;font-size:15px;padding:18px 0;cursor:pointer;display:flex;justify-content:space-between;color:var(--vj-ink);font-family:inherit}
 html[data-viole="on"] .vj-acc-b{font-size:14px;line-height:1.75;color:#5a5a5a;padding:0 0 18px;display:none}
 html[data-viole="on"] .vj-acc-item.open .vj-acc-b{display:block}
+
+/* AROUND YUR식: 네이티브 상세설명(긴 이미지)·탭바 숨김 → 상세는 왼쪽 스택으로, 리뷰가 상품 바로 아래 최하단 섹션 */
+html[data-viole="on"] #prdDetail,
+html[data-viole="on"] .detail_tab,
+html[data-viole="on"] #tabProduct{display:none!important}
+/* 리뷰/문의/거래조건 = 풀폭 하단 섹션 여백 */
+html[data-viole="on"] #prdReview,
+html[data-viole="on"] #prdQnA,
+html[data-viole="on"] #prdInfo{max-width:1100px;margin:0 auto;padding:0 22px}
+html[data-viole="on"] #prdReview{padding-top:40px;border-top:1px solid var(--vj-hair);margin-top:30px}
