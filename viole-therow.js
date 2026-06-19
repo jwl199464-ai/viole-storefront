@@ -76,22 +76,27 @@
       }
     }
 
-    // ── PDP(상품상세): 갤러리 → 세로 이미지 스택 (왼쪽 스크롤 / 오른쪽 sticky 정보) ──
+    // ── PDP(상품상세): 갤러리 → 세로 이미지 스택. 카페24 갤러리가 나중에 덮어써도 옵저버로 재적용 ──
     function buildPDP(){
-      var rw=document.querySelector('.xans-product-image .RW');
-      if(!rw || rw.getAttribute('data-vjpdp')) return;
-      rw.setAttribute('data-vjpdp','1');
-      var urls=[], seen={};
-      Array.prototype.forEach.call(rw.querySelectorAll('img'), function(im){
-        var s=im.getAttribute('src')||'';
-        if(!s || /btn_|txt_|icon|loading|\.gif(\?|$)/i.test(s)) return;
-        var big=s.replace(/\/(tiny|small|medium|micro|smaller|thumb)\//i,'/big/');
-        if(big.indexOf('//')===0) big='https:'+big;
-        var key=big.split('?')[0];
-        if(!seen[key]){ seen[key]=1; urls.push(big); }
-      });
-      if(!urls.length) return;
-      rw.innerHTML='<div class="vj-pdp-stack">'+urls.map(function(u){return '<img class="vj-pdp-img" src="'+u+'" onerror="this.remove()">';}).join('')+'</div>';
+      var area=document.querySelector('.xans-product-image');
+      if(!area || area.getAttribute('data-vjpdp')) return;
+      area.setAttribute('data-vjpdp','1');
+      function apply(){
+        var rw=area.querySelector('.RW'); if(!rw || rw.querySelector('.vj-pdp-stack')) return;
+        var urls=[], seen={};
+        Array.prototype.forEach.call(rw.querySelectorAll('img'), function(im){
+          var s=im.getAttribute('src')||'';
+          if(!s || /btn_|txt_|icon|loading|spr_|\.gif(\?|$)/i.test(s)) return;
+          var big=s.replace(/\/(tiny|small|medium|micro|smaller|thumb)\//i,'/big/');
+          if(big.indexOf('//')===0) big='https:'+big;
+          var key=big.split('?')[0]; if(!seen[key]){ seen[key]=1; urls.push(big); }
+        });
+        if(!urls.length) return;
+        rw.innerHTML='<div class="vj-pdp-stack">'+urls.map(function(u){return '<img class="vj-pdp-img" src="'+u+'" onerror="this.remove()">';}).join('')+'</div>';
+      }
+      apply();
+      var t; var obs=new MutationObserver(function(){ clearTimeout(t); t=setTimeout(apply,150); });
+      obs.observe(area,{childList:true,subtree:true});
     }
 
     function proof(){ if(document.getElementById('vj-proof'))return; var d=document.createElement('div'); d.id='vj-proof'; d.textContent='VIOLE JU × THE ROW — preview'; document.body.appendChild(d); }
