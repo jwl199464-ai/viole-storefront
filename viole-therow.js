@@ -76,27 +76,31 @@
       }
     }
 
-    // ── PDP(상품상세): 갤러리 → 세로 이미지 스택. 카페24 갤러리가 나중에 덮어써도 옵저버로 재적용 ──
+    // ── PDP(상품상세): 네이티브 갤러리는 CSS로 숨기고, 별도 스택을 주입(카페24 JS와 안 싸움) ──
     function buildPDP(){
-      var area=document.querySelector('.xans-product-image');
-      if(!area || area.getAttribute('data-vjpdp')) return;
-      area.setAttribute('data-vjpdp','1');
-      function apply(){
-        var rw=area.querySelector('.RW'); if(!rw || rw.querySelector('.vj-pdp-stack')) return;
+      var area=document.querySelector('.xans-product-image'); if(!area) return;
+      function tryBuild(){
+        if(area.getAttribute('data-vjpdp')) return true;
+        var rw=area.querySelector('.RW'); if(!rw) return false;
         var urls=[], seen={};
         Array.prototype.forEach.call(rw.querySelectorAll('img'), function(im){
           var s=im.getAttribute('src')||'';
-          if(!s || /btn_|txt_|icon|loading|spr_|\.gif(\?|$)/i.test(s)) return;
+          if(!s || /btn_|txt_|icon|loading|spr_|common|btn|blank|\.gif(\?|$)/i.test(s)) return;
           var big=s.replace(/\/(tiny|small|medium|micro|smaller|thumb)\//i,'/big/');
           if(big.indexOf('//')===0) big='https:'+big;
           var key=big.split('?')[0]; if(!seen[key]){ seen[key]=1; urls.push(big); }
         });
-        if(!urls.length) return;
-        rw.innerHTML='<div class="vj-pdp-stack">'+urls.map(function(u){return '<img class="vj-pdp-img" src="'+u+'" onerror="this.remove()">';}).join('')+'</div>';
+        if(!urls.length) return false;
+        var stack=document.createElement('div'); stack.className='vj-pdp-stack';
+        stack.innerHTML=urls.map(function(u){return '<img class="vj-pdp-img" src="'+u+'" onerror="this.remove()">';}).join('');
+        area.insertBefore(stack, area.firstChild);
+        area.setAttribute('data-vjpdp','1');   // CSS가 이 표시로 네이티브 .RW / .RTMB 숨김
+        return true;
       }
-      apply();
-      var t; var obs=new MutationObserver(function(){ clearTimeout(t); t=setTimeout(apply,150); });
+      if(tryBuild()) return;
+      var obs=new MutationObserver(function(){ if(tryBuild()) obs.disconnect(); });
       obs.observe(area,{childList:true,subtree:true});
+      setTimeout(function(){ try{obs.disconnect();}catch(e){} }, 8000);
     }
 
     function proof(){ if(document.getElementById('vj-proof'))return; var d=document.createElement('div'); d.id='vj-proof'; d.textContent='VIOLE JU × THE ROW — preview'; document.body.appendChild(d); }

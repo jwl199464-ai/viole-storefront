@@ -150,6 +150,8 @@ html[data-viole="on"] .xans-product-headcategory img{display:none!important}
 /* JS가 빈 배너 섹션에 부여 */
 html[data-viole="on"] .vj-hidden{display:none!important}
 
-/* PDP 이미지 세로 스택 (왼쪽 스크롤 / 오른쪽 sticky) */
+/* PDP 이미지 세로 스택 (왼쪽 스크롤 / 오른쪽 sticky) — 네이티브 갤러리는 숨기고 별도 스택만 표시 */
 html[data-viole="on"] .vj-pdp-stack{display:flex;flex-direction:column;gap:6px}
 html[data-viole="on"] .vj-pdp-img{width:100%;height:auto;display:block;background:var(--vj-prodbg)}
+html[data-viole="on"] .xans-product-image[data-vjpdp] .RW,
+html[data-viole="on"] .xans-product-image[data-vjpdp] .RTMB{display:none!important}
