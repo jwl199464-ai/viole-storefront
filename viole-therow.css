@@ -155,3 +155,6 @@ html[data-viole="on"] .vj-pdp-stack{display:flex;flex-direction:column;gap:6px}
 html[data-viole="on"] .vj-pdp-img{width:100%;height:auto;display:block;background:var(--vj-prodbg)}
 html[data-viole="on"] .xans-product-image[data-vjpdp] .RW,
 html[data-viole="on"] .xans-product-image[data-vjpdp] .RTMB{display:none!important}
+/* ⭐ sticky 작동의 핵심: 브라더 #wrap의 overflow:hidden이 position:sticky를 깨뜨림 → 해제 */
+html[data-viole="on"] #wrap,
+html[data-viole="on"] .wrap{overflow:visible!important}
