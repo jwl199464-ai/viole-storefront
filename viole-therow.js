@@ -77,8 +77,21 @@
     }
 
     // ── PDP(상품상세): 네이티브 갤러리는 CSS로 숨기고, 별도 스택을 주입(카페24 JS와 안 싸움) ──
+    // 화보 매핑: product_no → 컷 수. Pages 의 pdp/<no>/1..N.jpg 를 직접 로드(카페24 추가이미지 API 우회).
+    var VJ_GALLERY = {"12": 8};
     function buildPDP(){
       var area=document.querySelector('.xans-product-image'); if(!area) return;
+      // ① 화보 직접 로드: 매핑된 상품이면 Pages 화보를 스택
+      var pm = location.href.match(/product_no=(\d+)/) || location.pathname.match(/\/(\d+)\/(?:category|display)\//);
+      var pno = pm && pm[1];
+      if(pno && VJ_GALLERY[pno] && !area.getAttribute('data-vjpdp')){
+        var n=VJ_GALLERY[pno], html='';
+        for(var i=1;i<=n;i++) html += '<img class="vj-pdp-img" src="'+BASE+'pdp/'+pno+'/'+i+'.jpg" onerror="this.remove()">';
+        var st=document.createElement('div'); st.className='vj-pdp-stack'; st.innerHTML=html;
+        area.insertBefore(st, area.firstChild); area.setAttribute('data-vjpdp','1');
+        return;
+      }
+      // ② 매핑 없으면 네이티브 갤러리에서 수집(폴백)
       function tryBuild(){
         if(area.getAttribute('data-vjpdp')) return true;
         var rw=area.querySelector('.RW'); if(!rw) return false;
