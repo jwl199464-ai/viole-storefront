@@ -78,12 +78,21 @@
 
     // ── PDP(상품상세): 네이티브 갤러리는 CSS로 숨기고, 별도 스택을 주입(카페24 JS와 안 싸움) ──
     // 화보 매핑: product_no → 컷 수. Pages 의 pdp/<no>/1..N.jpg 를 직접 로드(카페24 추가이미지 API 우회).
-    var VJ_GALLERY = {"12": 8};
+    var VJ_GALLERY = {"12": 14};
+    // 상품별 아코디언 콘텐츠(상품설명·상품정보). 배송/취소는 매장공통 상수.
+    var VJ_PDP_INFO = {
+      "12": {
+        desc: "가볍게 걸치는, 단정한 여름 린넨 한 벌.<br><br>슬럽감 있는 린넨으로 가볍고 통기성이 좋아 여름에 잘 어울립니다. V넥 라인과 3버튼 여밈, 앞면 패치 포켓 2개의 절제된 디테일이 단정한 실루엣을 완성합니다.",
+        info: "소재 린넨 100%<br>색상 브라운<br>핏 세미 오버핏<br>디테일 V넥 · 3버튼 · 패치 포켓 2"
+      }
+    };
+    var VJ_SHIP = "택배 배송. 배송비 2,500원 (50,000원 이상 구매 시 무료).<br>평균 2~3 영업일 내 출고 (주말·공휴일 제외). 거래처 사정에 따라 지연될 수 있습니다.";
+    var VJ_RETURN = "<b>취소</b> 출고 전 마이페이지·채널로 요청해 주세요. 출고 후에는 취소가 불가합니다.<br><br><b>교환·반품</b> 상품 수령 후 7일 이내 접수. 단순 변심 시 왕복 배송비는 고객 부담입니다. 착용 흔적(향 포함)·택 제거·상품 변형이 있을 경우 불가합니다. 세일·품절 상품은 교환·반품이 불가합니다.";
+    function vjPno(){ var m=location.href.match(/product_no=(\d+)/)||location.pathname.match(/\/(\d+)\/(?:category|display)\//); return m&&m[1]; }
     function buildPDP(){
       var area=document.querySelector('.xans-product-image'); if(!area) return;
       // ① 화보 직접 로드: 매핑된 상품이면 Pages 화보를 스택
-      var pm = location.href.match(/product_no=(\d+)/) || location.pathname.match(/\/(\d+)\/(?:category|display)\//);
-      var pno = pm && pm[1];
+      var pno = vjPno();
       if(pno && VJ_GALLERY[pno] && !area.getAttribute('data-vjpdp')){
         var n=VJ_GALLERY[pno], html='';
         for(var i=1;i<=n;i++) html += '<img class="vj-pdp-img" src="'+BASE+'pdp/'+pno+'/'+i+'.jpg" onerror="this.remove()">';
@@ -132,6 +141,11 @@
       var crumb=crumbCat?('여성 · '+crumbCat):'';
       var cart=info.querySelector('.actionCart'), wish=info.querySelector('.actionWish'), buy=info.querySelector('a.btnSubmit');
       var priceHtml=(was&&was!==now?'<span class="vj-was">'+was+'</span>':'')+(now||'')+(off?'<span class="vj-off">'+off+'</span>':'');
+      var pinfo=VJ_PDP_INFO[vjPno()]||{};
+      var accItems=[['상품 설명', pinfo.desc||summary||name, true]];
+      if(pinfo.info) accItems.push(['상품 정보', pinfo.info, false]);
+      accItems.push(['배송 안내', VJ_SHIP, false], ['취소 / 교환 / 반품', VJ_RETURN, false]);
+      var accHtml='<div class="vj-acc">'+accItems.map(function(it){return '<div class="vj-acc-item'+(it[2]?' open':'')+'"><button class="vj-acc-h">'+it[0]+' <span>'+(it[2]?'−':'+')+'</span></button><div class="vj-acc-b">'+it[1]+'</div></div>';}).join('')+'</div>';
       var p=document.createElement('div'); p.className='vj-info';
       p.innerHTML=
         (crumb?'<div class="vj-crumb">'+crumb+'</div>':'')+
@@ -140,11 +154,7 @@
         (ship?'<div class="vj-ship">배송 · <b>'+ship+'</b></div>':'')+
         '<button class="vj-cta">Add to Bag</button>'+
         '<button class="vj-save">♡ Add to Saved</button>'+
-        (summary?'<p class="vj-desc">'+summary+'</p>':'')+
-        '<div class="vj-acc">'+
-          '<div class="vj-acc-item open"><button class="vj-acc-h">Details <span>−</span></button><div class="vj-acc-b">'+(summary||name)+'</div></div>'+
-          '<div class="vj-acc-item"><button class="vj-acc-h">Shipping &amp; Returns <span>+</span></button><div class="vj-acc-b">'+(ship||'택배 배송')+' · 수령 후 7일 이내 교환·반품이 가능합니다.</div></div>'+
-        '</div>';
+        accHtml;
       info.insertBefore(p, info.firstChild);
       info.setAttribute('data-vjinfo','1');
       var cta=p.querySelector('.vj-cta'); if(cta)cta.addEventListener('click',function(){var b=cart||buy;if(b)b.click();});
