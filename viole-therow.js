@@ -9,7 +9,7 @@
   try {
     var href = location.href;
     if (/[?&#]viole=0/.test(href)) { document.cookie='viole_preview=; path=/; max-age=0'; return; }
-    if (/[?&#]viole=1/.test(href)) { document.cookie='viole_preview=1; path=/; max-age=86400'; }
+    if (/[?&#]viole=1/.test(href)) { document.cookie='viole_preview=1; path=/; max-age=2592000'; }
     var DEV = /[?&#]viole=1/.test(href) || document.cookie.indexOf('viole_preview=1')>-1;
     if (!DEV) return;                                  // 일반 고객: 아무 동작 안 함
 
