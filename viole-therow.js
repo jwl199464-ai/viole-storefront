@@ -103,9 +103,46 @@
       setTimeout(function(){ try{obs.disconnect();}catch(e){} }, 8000);
     }
 
+    // ── PDP 오른쪽 정보패널 = 목업 .pdp__info 이식 (네이티브 표 숨김 / 폼·버튼은 살려서 .click() 연결) ──
+    function buildInfo(){
+      var info=document.querySelector('.infoArea'); if(!info) return;
+      if(info.getAttribute('data-vjinfo')) return;
+      var t=info.innerText||'';
+      function m(re){var x=t.match(re);return x?(x[1]||'').trim():'';}
+      var hA=info.querySelector('.headingArea');
+      var name=((hA?hA.innerText:document.title)||'').replace(/\s+/g,' ').trim().split('|')[0].trim().slice(0,80);
+      if(!name) return;
+      var was=m(/소비자가\s*([\d,]+원)/), now=m(/판매가\s*([\d,]+원)/)||m(/([\d,]+원)/), off=m(/(\d{1,2}%)/);
+      var summary=m(/상품요약정보\s*([^\n\t]+)/), ship=m(/배송비\s*([^\n]+)/);
+      var crumbRaw=((document.querySelector('.xans-product-headcategory, .path')||{}).textContent||'').replace(/\s+/g,' ').trim();
+      var crumbCat=crumbRaw.replace(/현재\s*위치|홈|HOME|home|＞|>|·|\|/g,' ').replace(/\s+/g,' ').trim().slice(0,24);
+      var crumb=crumbCat?('여성 · '+crumbCat):'';
+      var cart=info.querySelector('.actionCart'), wish=info.querySelector('.actionWish'), buy=info.querySelector('a.btnSubmit');
+      var priceHtml=(was&&was!==now?'<span class="vj-was">'+was+'</span>':'')+(now||'')+(off?'<span class="vj-off">'+off+'</span>':'');
+      var p=document.createElement('div'); p.className='vj-info';
+      p.innerHTML=
+        (crumb?'<div class="vj-crumb">'+crumb+'</div>':'')+
+        '<div class="vj-pname-row"><h1 class="vj-pname">'+name+'</h1><button class="vj-wish" title="찜">♡</button></div>'+
+        '<div class="vj-price">'+priceHtml+'</div>'+
+        (ship?'<div class="vj-ship">배송 · <b>'+ship+'</b></div>':'')+
+        '<button class="vj-cta">Add to Bag</button>'+
+        '<button class="vj-save">♡ Add to Saved</button>'+
+        (summary?'<p class="vj-desc">'+summary+'</p>':'')+
+        '<div class="vj-acc">'+
+          '<div class="vj-acc-item open"><button class="vj-acc-h">Details <span>−</span></button><div class="vj-acc-b">'+(summary||name)+'</div></div>'+
+          '<div class="vj-acc-item"><button class="vj-acc-h">Shipping &amp; Returns <span>+</span></button><div class="vj-acc-b">'+(ship||'택배 배송')+' · 수령 후 7일 이내 교환·반품이 가능합니다.</div></div>'+
+        '</div>';
+      info.insertBefore(p, info.firstChild);
+      info.setAttribute('data-vjinfo','1');
+      var cta=p.querySelector('.vj-cta'); if(cta)cta.addEventListener('click',function(){var b=cart||buy;if(b)b.click();});
+      var sv=p.querySelector('.vj-save'); if(sv)sv.addEventListener('click',function(){if(wish)wish.click();});
+      var wb=p.querySelector('.vj-wish'); if(wb)wb.addEventListener('click',function(){if(wish)wish.click();});
+      Array.prototype.forEach.call(p.querySelectorAll('.vj-acc-h'),function(h){h.addEventListener('click',function(){var it=h.parentElement;it.classList.toggle('open');var s=h.querySelector('span');if(s)s.textContent=it.classList.contains('open')?'−':'+';});});
+    }
+
     function proof(){ if(document.getElementById('vj-proof'))return; var d=document.createElement('div'); d.id='vj-proof'; d.textContent='VIOLE JU × THE ROW — preview'; document.body.appendChild(d); }
 
-    function run(){ try{ buildHeader(); buildHome(); buildPLP(); buildPDP(); proof(); }catch(e){} }
+    function run(){ try{ buildHeader(); buildHome(); buildPLP(); buildPDP(); buildInfo(); proof(); }catch(e){} }
     if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded', run);
   } catch(e){ /* 스토어프론트 절대 안 깨뜨림 */ }
 })();

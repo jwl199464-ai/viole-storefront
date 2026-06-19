@@ -158,3 +158,29 @@ html[data-viole="on"] .xans-product-image[data-vjpdp] .RTMB{display:none!importa
 /* ⭐ sticky 작동의 핵심: 브라더 #wrap의 overflow:hidden이 position:sticky를 깨뜨림 → 해제 */
 html[data-viole="on"] #wrap,
 html[data-viole="on"] .wrap{overflow:visible!important}
+
+/* ============================================================
+   PDP 오른쪽 정보패널 = 목업 .pdp__info 1:1 이식
+   네이티브 카페24 표/버튼은 [data-vjinfo]로 숨기고(폼은 DOM에 살아있어 구매 동작 유지),
+   .vj-info(목업 구조)만 노출. 버튼은 JS가 네이티브 .actionCart/.actionWish에 .click() 연결.
+   ============================================================ */
+html[data-viole="on"] .infoArea[data-vjinfo] > *:not(.vj-info){display:none!important}
+html[data-viole="on"] .vj-info{max-width:392px;padding-top:4px;color:var(--vj-ink)}
+html[data-viole="on"] .vj-crumb{font-size:13px;color:var(--vj-ink2);margin-bottom:18px;letter-spacing:.02em}
+html[data-viole="on"] .vj-pname-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+html[data-viole="on"] .vj-pname{font-size:17px;font-weight:400;margin:0 0 10px;line-height:1.4}
+html[data-viole="on"] .vj-wish{background:none;border:0;font-size:20px;line-height:1;color:var(--vj-ink);cursor:pointer;padding:2px 0}
+html[data-viole="on"] .vj-price{font-size:16px;margin-bottom:6px}
+html[data-viole="on"] .vj-was{color:#9a958c;text-decoration:line-through;font-size:15px;margin-right:8px}
+html[data-viole="on"] .vj-off{color:#a23b3b;font-size:15px;margin-left:9px}
+html[data-viole="on"] .vj-ship{font-size:13px;color:var(--vj-ink2);margin:8px 0 26px;line-height:1.7}
+html[data-viole="on"] .vj-ship b{color:var(--vj-ink);font-weight:400}
+html[data-viole="on"] .vj-cta{display:block;width:100%;height:56px;background:var(--vj-ink);color:#fff;border:0;font-size:15px;letter-spacing:.03em;cursor:pointer;margin-bottom:10px}
+html[data-viole="on"] .vj-cta:hover{opacity:.88}
+html[data-viole="on"] .vj-save{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;height:50px;background:#fff;color:var(--vj-ink);border:1px solid var(--vj-ink);font-size:14px;cursor:pointer;margin-bottom:28px}
+html[data-viole="on"] .vj-desc{font-size:15px;line-height:1.8;color:#2c2b2b;margin-bottom:24px}
+html[data-viole="on"] .vj-acc{border-top:1px solid var(--vj-hair)}
+html[data-viole="on"] .vj-acc-item{border-bottom:1px solid var(--vj-hair)}
+html[data-viole="on"] .vj-acc-h{width:100%;text-align:left;background:none;border:0;font-size:15px;padding:18px 0;cursor:pointer;display:flex;justify-content:space-between;color:var(--vj-ink);font-family:inherit}
+html[data-viole="on"] .vj-acc-b{font-size:14px;line-height:1.75;color:#5a5a5a;padding:0 0 18px;display:none}
+html[data-viole="on"] .vj-acc-item.open .vj-acc-b{display:block}
