@@ -123,7 +123,8 @@ html[data-viole="on"] #top{padding:0!important;margin:0!important;max-width:none
 .vj-sec-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:26px}
 .vj-sec-h h2{font-size:17px;font-weight:400;letter-spacing:.08em;margin:0;color:var(--vj-ink)}
 .vj-sec-h a{font-size:13px;color:var(--vj-ink2);text-decoration:none}
-.vj-car{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 80px)/5);gap:20px;overflow-x:auto;padding-bottom:10px}
+.vj-car{display:flex;flex-wrap:wrap;justify-content:center;gap:26px;padding-bottom:10px}
+.vj-car .vj-pcard{flex:0 1 320px;max-width:46vw}
 .vj-pcard{text-decoration:none;color:var(--vj-ink);display:block}
 .vj-ph{width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--vj-prodbg);display:block}
 .vj-nm{font-size:13px;margin:12px 0 4px}
@@ -186,9 +187,9 @@ html[data-viole="on"] .vj-acc-b{font-size:14px;line-height:1.75;color:#5a5a5a;pa
 html[data-viole="on"] .vj-acc-item.open .vj-acc-b{display:block}
 
 /* AROUND YUR식: 네이티브 상세설명(긴 이미지)·탭바 숨김 → 상세는 왼쪽 스택으로, 리뷰가 상품 바로 아래 최하단 섹션 */
-html[data-viole="on"] #prdDetail,
-html[data-viole="on"] .detail_tab,
-html[data-viole="on"] #tabProduct{display:none!important}
+html[data-viole="on"][data-vjcustomdetail] #prdDetail,
+html[data-viole="on"][data-vjcustomdetail] .detail_tab,
+html[data-viole="on"][data-vjcustomdetail] #tabProduct{display:none!important}
 /* 리뷰/문의/거래조건 = 풀폭 하단 섹션 여백 */
 html[data-viole="on"] #prdReview,
 html[data-viole="on"] #prdQnA,

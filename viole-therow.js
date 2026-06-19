@@ -8,10 +8,8 @@
 (function () {
   try {
     var href = location.href;
-    if (/[?&#]viole=0/.test(href)) { document.cookie='viole_preview=; path=/; max-age=0'; return; }
-    if (/[?&#]viole=1/.test(href)) { document.cookie='viole_preview=1; path=/; max-age=2592000'; }
-    var DEV = /[?&#]viole=1/.test(href) || document.cookie.indexOf('viole_preview=1')>-1;
-    if (!DEV) return;                                  // 일반 고객: 아무 동작 안 함
+    if (/[?&#]viole=0/.test(href)) return;             // 임시 끄기(킬스위치): ?viole=0 이면 미적용
+    // ⭐ 전체공개(2026-06-19): 게이트 해제 — 모든 고객에게 The Row 디자인 적용.
 
     var H=document.documentElement;
     if (H.getAttribute('data-viole')==='on') return;
@@ -48,15 +46,8 @@
       var main=document.querySelector('main#top')||document.querySelector('main');
       if(!main || main.getAttribute('data-vjhome')) return;
       main.setAttribute('data-vjhome','1');
-      function sw(){var s='';for(var i=0;i<arguments.length;i++)s+='<i style="background:'+arguments[i]+'"></i>';return s;}
-      function card(img,nm,pr,s){return '<a class="vj-pcard" href="/product/list.html"><img class="vj-ph" src="'+BASE+img+'"><div class="vj-nm">'+nm+'</div><div class="vj-pr">'+pr+'</div><div class="vj-sw">'+s+'</div></a>';}
-      var cards=[
-        card('hero.jpg','린넨 크롭 재킷','<span class="vj-was">189,000원</span>151,200원',sw('#b8b1a4','#efece6')),
-        card('p2.jpg','울 더블 코트','320,000원',sw('#3a3a3a','#b8a98f')),
-        card('p3.jpg','울 테일러드 슬랙스','142,000원',sw('#b8a98f','#2c2c2c')),
-        card('p4.jpg','실크 슬립 드레스','<span class="vj-was">238,000원</span>190,400원',sw('#efece6')),
-        card('p5.jpg','코튼 보트넥 톱','98,000원',sw('#ffffff','#1c1b1b'))
-      ].join('');
+      function card(h){var src=h.pages?BASE+h.src:h.src; return '<a class="vj-pcard" href="/product/detail.html?product_no='+h.no+'"><img class="vj-ph" src="'+src+'"><div class="vj-nm">'+h.nm+'</div><div class="vj-pr">'+h.pr+'</div></a>';}
+      var cards=VJ_HOME.map(card).join('');
       main.innerHTML =
         '<section class="vj-hero"><img src="'+BASE+'hero.jpg"><a class="vj-cue" href="/product/list.html">Shop New Arrivals ↓</a></section>'
        +'<section class="vj-sec"><div class="vj-sec-h"><h2>NEW ARRIVALS</h2><a href="/product/list.html">전체 보기 →</a></div><div class="vj-car">'+cards+'</div></section>'
@@ -89,6 +80,11 @@
     var VJ_SHIP = "택배 배송. 배송비 2,500원 (50,000원 이상 구매 시 무료).<br>평균 2~3 영업일 내 출고 (주말·공휴일 제외). 거래처 사정에 따라 지연될 수 있습니다.";
     var VJ_RETURN = "<b>취소</b> 출고 전 마이페이지·채널로 요청해 주세요. 출고 후에는 취소가 불가합니다.<br><br><b>교환·반품</b> 상품 수령 후 7일 이내 접수. 단순 변심 시 왕복 배송비는 고객 부담입니다. 착용 흔적(향 포함)·택 제거·상품 변형이 있을 경우 불가합니다. 세일·품절 상품은 교환·반품이 불가합니다.";
     function vjPno(){ var m=location.href.match(/product_no=(\d+)/)||location.pathname.match(/\/(\d+)\/(?:category|display)\//); return m&&m[1]; }
+    // 홈 NEW ARRIVALS = 실제 상품 (pages=true면 Pages 화보, 아니면 Cafe24 이미지 URL). 상품 추가 시 여기 추가.
+    var VJ_HOME = [
+      {src:'pdp/12/1.jpg', pages:true, nm:'브라운 린넨 반팔 자켓', pr:'<span class="vj-was">59,000원</span>47,200원', no:12},
+      {src:'https://ecimg.cafe24img.com/pg2990b56274580059/catherin30/web/product/big/20260611/5a6efe2e2b48fdaa9d520a0e9551ff10.png', pages:false, nm:'달마시안 그래픽 티셔츠', pr:'<span class="vj-was">32,000원</span>19,900원', no:11}
+    ];
     function buildPDP(){
       var area=document.querySelector('.xans-product-image'); if(!area) return;
       // ① 화보 직접 로드: 매핑된 상품이면 Pages 화보를 스택
@@ -98,6 +94,7 @@
         for(var i=1;i<=n;i++) html += '<img class="vj-pdp-img" src="'+BASE+'pdp/'+pno+'/'+i+'.jpg" onerror="this.remove()">';
         var st=document.createElement('div'); st.className='vj-pdp-stack'; st.innerHTML=html;
         area.insertBefore(st, area.firstChild); area.setAttribute('data-vjpdp','1');
+        document.documentElement.setAttribute('data-vjcustomdetail','1');  // 화보 있는 상품만 네이티브 상세 숨김
         return;
       }
       // ② 매핑 없으면 네이티브 갤러리에서 수집(폴백)
@@ -163,7 +160,7 @@
       Array.prototype.forEach.call(p.querySelectorAll('.vj-acc-h'),function(h){h.addEventListener('click',function(){var it=h.parentElement;it.classList.toggle('open');var s=h.querySelector('span');if(s)s.textContent=it.classList.contains('open')?'−':'+';});});
     }
 
-    function proof(){ if(document.getElementById('vj-proof'))return; var d=document.createElement('div'); d.id='vj-proof'; d.textContent='VIOLE JU × THE ROW — preview'; document.body.appendChild(d); }
+    function proof(){ if(!/[?&#]viole=1/.test(location.href))return; if(document.getElementById('vj-proof'))return; var d=document.createElement('div'); d.id='vj-proof'; d.textContent='VIOLE JU × THE ROW — preview'; document.body.appendChild(d); }
 
     function run(){ try{ buildHeader(); buildHome(); buildPLP(); buildPDP(); buildInfo(); proof(); }catch(e){} }
     if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded', run);
